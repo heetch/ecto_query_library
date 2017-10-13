@@ -4,4 +4,4 @@ config :fishing_spot, FishingSpot.Repo,
     database: "fishing_spot_dev",
     username: "postgres",
     password: "postgres",
-    hostname: "localhostj"
+    hostname: "localhost"
