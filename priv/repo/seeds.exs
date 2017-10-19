@@ -96,56 +96,58 @@ defmodule FishingSpot.Data do
     Repo.insert! %FishermanTrip{fisherman_id: mark.id , trip_id: trip2.id}
     Repo.insert! %FishermanTrip{fisherman_id: mark.id , trip_id: trip3.id}
 
+    Ecto.Adapters.SQL.query!(Repo, File.read!("priv/repo/fish_landed.sql"))
 
-    Enum.each(1..1000, fn(_) ->
-      attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
-      Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: attributes.weight, length: attributes.length, fisherman_id: attributes.fisherman.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
-    end)
+  #   Enum.each(1..1000, fn(_) ->
+  #     attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
+  #     Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: attributes.weight, length: attributes.length, fisherman_id: attributes.fisherman.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
+  #   end)
 
-    attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
-    Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: mark.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
-    attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
-    Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: kirk.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
-    attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
-    Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: lew.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
-    attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
-    Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: joe.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
+  #   attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
+  #   Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: mark.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
+  #   attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
+  #   Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: kirk.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
+  #   attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
+  #   Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: lew.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
+  #   attributes = get_fish_attributes(30, 5, fishermen, locations, flies, trips, fish_types)
+  #   Repo.insert %FishLanded{date_and_time: attributes.date_and_time_caught, weight: Decimal.new(:rand.uniform(50)), length: Decimal.new(:rand.uniform(100)), fisherman_id: joe.id, location_id: attributes.location.id, fly_type_id: attributes.fly.id, fish_species_id: attributes.fish.id}
 
 
-    Repo.insert Ecto.put_meta( %Account{ identifier: "lew@example.com",  name: "Lew"  }, prefix: "users" )
-    Repo.insert Ecto.put_meta( %Account{ identifier: "mark@example.com", name: "Mark" }, prefix: "users" )
-    Repo.insert Ecto.put_meta( %Account{ identifier: "john@example.com", name: "John" }, prefix: "users" )
-  end
+  #   Repo.insert Ecto.put_meta( %Account{ identifier: "lew@example.com",  name: "Lew"  }, prefix: "users" )
+  #   Repo.insert Ecto.put_meta( %Account{ identifier: "mark@example.com", name: "Mark" }, prefix: "users" )
+  #   Repo.insert Ecto.put_meta( %Account{ identifier: "john@example.com", name: "John" }, prefix: "users" )
+  # end
 
-  def get_fish_attributes(max_length, max_weight, fishermen, locations, flies, _trips, fish_types) do
-    :rand.seed(:exs64)
-    fisherman           = Enum.shuffle(fishermen                 ) |> List.first
-    fisherman           = Repo.preload(fisherman, :trips         )
-    location            = Enum.shuffle(locations                 ) |> List.first
-    fly                 = Enum.shuffle(flies                     ) |> List.first
-    trip                = Enum.shuffle(fisherman.trips           ) |> List.first
-    fish                = Enum.shuffle(fish_types                ) |> List.first
-    length              = Decimal.new(:rand.uniform(max_length ) )
-    weight              = Decimal.new(:rand.uniform(max_weight ) )
+  # def get_fish_attributes(max_length, max_weight, fishermen, locations, flies, _trips, fish_types) do
+  #   :rand.seed(:exs64)
 
-    %Date{year: year, month: month, day: trip_start} = trip.start_date
-    %Date{day: trip_end}                             = trip.end_date
+  #   fisherman           = Enum.shuffle(fishermen                 ) |> List.first
+  #   fisherman           = Repo.preload(fisherman, :trips         )
+  #   location            = Enum.shuffle(locations                 ) |> List.first
+  #   fly                 = Enum.shuffle(flies                     ) |> List.first
+  #   trip                = Enum.shuffle(fisherman.trips           ) |> List.first
+  #   fish                = Enum.shuffle(fish_types                ) |> List.first
+  #   length              = Decimal.new(:rand.uniform(max_length ) )
+  #   weight              = Decimal.new(:rand.uniform(max_weight ) )
 
-    trip_length                 = trip_end - trip_start
-    day_caught                  = :rand.uniform(trip_length)
-    {:ok, date_caught}          = Date.new(year, month, trip_start + day_caught)
-    {:ok, date_and_time_caught} = NaiveDateTime.new(date_caught, Time.utc_now())
+  #   %Date{year: year, month: month, day: trip_start} = trip.start_date
+  #   %Date{day: trip_end}                             = trip.end_date
 
-    %RandomizedAttributes{
-      fisherman:    fisherman,
-      location:  location,
-      fly:       fly,
-      trip:      trip,
-      fish:      fish,
-      length:    length,
-      weight:    weight,
-      date_and_time_caught: date_and_time_caught
-    }
+  #   trip_length                 = trip_end - trip_start
+  #   day_caught                  = :rand.uniform(trip_length)
+  #   {:ok, date_caught}          = Date.new(year, month, trip_start + day_caught)
+  #   {:ok, date_and_time_caught} = NaiveDateTime.new(date_caught, Time.utc_now())
+
+  #   %RandomizedAttributes{
+  #     fisherman:    fisherman,
+  #     location:  location,
+  #     fly:       fly,
+  #     trip:      trip,
+  #     fish:      fish,
+  #     length:    length,
+  #     weight:    weight,
+  #     date_and_time_caught: date_and_time_caught
+  #   }
   end
 end
 
